@@ -8,12 +8,14 @@ import androidx.compose.material.Surface
 import androidx.navigation.compose.rememberNavController
 import com.example.androidhub.navigation.SetUpNavGraph
 import com.example.androidhub.ui.theme.AndroidHubTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AndroidHubTheme {
+            AndroidHubTheme() {
                 Surface(color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
                     SetUpNavGraph(navController = navController)

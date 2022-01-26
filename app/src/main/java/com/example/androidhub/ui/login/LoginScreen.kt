@@ -4,11 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,19 +14,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.androidhub.navigation.Screen
-import com.example.androidhub.ui.TextInput
+import com.example.androidhub.ui.composables.BasicTextInput
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
-
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -38,6 +34,7 @@ fun LoginScreen(
         ) {
             Header()
             TextFields(navController = navController)
+            Spacer(modifier = Modifier.weight(weight = 1.0f))
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -56,7 +53,6 @@ fun LoginScreen(
             }
         }
     }
-
 }
 
 @Composable
@@ -77,43 +73,48 @@ fun Header() {
 }
 
 @Composable
-fun TextFields(navController: NavHostController) {
-
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-    TextInput(
-        text = email,
-        label = "Email",
+fun TextFields(
+    navController: NavHostController,
+    loginViewModel: LoginViewModel = hiltViewModel()
+) {
+    BasicTextInput(
+        text = loginViewModel.emailText.value,
+        hint = "Email",
+        error = loginViewModel.emailError.value,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 35.dp),
-        onValueChange = { email = it },
+        onValueChange = { loginViewModel.setEmailText(it) },
         keyboardType = KeyboardType.Email
     )
-    TextInput(
-        text = password,
-        label = "Password",
+    BasicTextInput(
+        text = loginViewModel.passwordText.value,
+        hint = "Password",
+        error = loginViewModel.passwordError.value,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
-        onValueChange = { password = it },
+        onValueChange = { loginViewModel.setPasswordText(it) },
+        showPasswordToggle = loginViewModel.showPassword.value,
+        onPasswordToggleClick = {
+            loginViewModel.setShowPassword(it)
+        },
         keyboardType = KeyboardType.Password
     )
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
             modifier = Modifier
-                .padding(top = 30.dp),
+                .padding(top = 40.dp),
             onClick = {
 
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.DarkGray
+                backgroundColor = MaterialTheme.colors.primary
             )
         ) {
             Text(
                 text = "Login",
-                style = TextStyle(color = Color.White)
+                style = TextStyle(color = Color.White, fontWeight = FontWeight.Bold)
             )
         }
     }
