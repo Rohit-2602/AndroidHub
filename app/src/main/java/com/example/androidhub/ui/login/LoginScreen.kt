@@ -106,7 +106,7 @@ fun TextFields(
             modifier = Modifier
                 .padding(top = 40.dp),
             onClick = {
-
+                navController.navigate(Screen.LearnScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.primary
