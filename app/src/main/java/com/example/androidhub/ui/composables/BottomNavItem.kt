@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.sp
+import com.example.androidhub.ui.theme.BottomNavItemColor
 
 @Composable
 fun RowScope.BottomNavItem(
@@ -23,7 +24,7 @@ fun RowScope.BottomNavItem(
     modifier: Modifier = Modifier,
     selected: Boolean,
     selectedColor: Color = MaterialTheme.colors.primary,
-    unselectedColor: Color = Color.DarkGray,
+    unselectedColor: Color = BottomNavItemColor,
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {

@@ -1,5 +1,7 @@
 package com.example.androidhub.ui.composables
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -10,6 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.androidhub.navigation.Screen
+import com.example.androidhub.ui.theme.BottomNavColor
 
 private val bottomNavItemsList = listOf(
     BottomNavItem(
@@ -50,12 +53,12 @@ fun StandardScaffold(
     modifier: Modifier = Modifier,
     showBottomBar: Boolean = true,
     bottomNavItems: List<BottomNavItem> = bottomNavItemsList,
-    content: @Composable () -> Unit
+    Content: @Composable () -> Unit
 ) {
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
-                BottomNavigation {
+                BottomNavigation(backgroundColor = BottomNavColor) {
                     bottomNavItems.forEachIndexed { _, bottomNavItem ->
                         BottomNavItem(
                             name = bottomNavItem.title,
@@ -74,8 +77,10 @@ fun StandardScaffold(
             }
         },
         modifier = modifier
-    ) {
-        content()
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            Content()
+        }
     }
 }
 
