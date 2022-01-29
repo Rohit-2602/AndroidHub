@@ -5,37 +5,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Group
+import androidx.compose.material.icons.outlined.QuestionAnswer
+import androidx.compose.material.icons.outlined.School
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.androidhub.navigation.Screen
-import com.example.androidhub.ui.theme.BottomNavColor
+import com.example.androidhub.ui.theme.PrimaryBackground
 
 private val bottomNavItemsList = listOf(
     BottomNavItem(
         route = Screen.LearnScreen.route,
-        icon = Icons.Default.School,
+        icon = Icons.Outlined.School,
         title = "Learn",
         contentDescription = "Learn BottomNavItem"
     ),
     BottomNavItem(
         route = Screen.CommunityScreen.route,
-        icon = Icons.Filled.Group,
+        icon = Icons.Outlined.Group,
         title = "Community",
         contentDescription = "Community BottomNavItem"
     ),
     BottomNavItem(
         route = Screen.CodeScreen.route,
-        icon = Icons.Default.Book,
+        icon = Icons.Outlined.Code,
         title = "Code",
         contentDescription = "Code BottomNavItem"
     ),
     BottomNavItem(
         route = Screen.DiscussScreen.route,
-        icon = Icons.Default.QuestionAnswer,
+        icon = Icons.Outlined.QuestionAnswer,
         title = "Discuss",
         contentDescription = "Discuss BottomNavItem"
     ),
@@ -58,7 +62,7 @@ fun StandardScaffold(
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
-                BottomNavigation(backgroundColor = BottomNavColor) {
+                BottomNavigation(backgroundColor = PrimaryBackground) {
                     bottomNavItems.forEachIndexed { _, bottomNavItem ->
                         BottomNavItem(
                             name = bottomNavItem.title,

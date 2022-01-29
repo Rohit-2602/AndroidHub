@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androidhub.R
-import com.example.androidhub.ui.theme.LightGray
+import com.example.androidhub.ui.theme.LightBackground
 import com.example.androidhub.ui.theme.Orange
 import com.example.androidhub.ui.theme.TextDarkGray
-import com.example.androidhub.ui.theme.TextLightGray
+import com.example.androidhub.ui.theme.TextGray
 import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
@@ -60,7 +60,8 @@ fun QuestionItem(
                 text = questionTitle,
                 fontSize = 16.sp,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = TextGray
             )
             Text(
                 text = questionDescription,
@@ -68,7 +69,7 @@ fun QuestionItem(
                 fontSize = 12.sp,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                color = TextLightGray
+                color = TextDarkGray
             )
             FlowRow {
                 tagsList.forEach { tag ->
@@ -87,20 +88,22 @@ fun QuestionItem(
                     contentDescription = "QuestionTimeAgo",
                     modifier = Modifier
                         .width(16.dp)
-                        .height(16.dp)
+                        .height(16.dp),
+                    tint = TextGray
                 )
                 Text(
                     text = timeAgo,
                     fontSize = 12.sp,
                     modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 5.dp),
+                    color = TextGray
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = userName, fontSize = 14.sp,
                     modifier = Modifier
                         .padding(end = 10.dp),
-                    color = TextDarkGray
+                    color = TextGray
                 )
                 Image(
                     painter = painterResource(id = R.drawable.bulbasaur),
@@ -108,11 +111,11 @@ fun QuestionItem(
                     modifier = Modifier
                         .width(30.dp)
                         .height(30.dp)
-                        .clip(RoundedCornerShape(40.dp))
+                        .clip(RoundedCornerShape(30.dp))
                         .border(
                             width = 1.dp,
                             color = Orange,
-                            shape = RoundedCornerShape(40.dp)
+                            shape = RoundedCornerShape(30.dp)
                         )
                 )
             }
@@ -126,8 +129,8 @@ fun TitleValueText(value: String, title: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(bottom = 10.dp)
     ) {
-        Text(text = value, fontSize = 12.sp)
-        Text(text = title, fontSize = 10.sp)
+        Text(text = value, fontSize = 12.sp, color = TextGray)
+        Text(text = title, fontSize = 10.sp, color = TextGray)
     }
 }
 
@@ -136,11 +139,12 @@ fun TagView(tag: String, fontSize: TextUnit = 10.sp) {
     Box(
         modifier = Modifier
             .padding(end = 5.dp, top = 10.dp)
-            .background(color = LightGray, shape = RoundedCornerShape(20.dp))
+            .background(color = LightBackground, shape = RoundedCornerShape(20.dp))
     ) {
         Text(
             text = tag,
             fontSize = fontSize,
+            color = TextGray,
             modifier = Modifier
                 .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
         )

@@ -5,25 +5,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.androidhub.ui.theme.DarkBackground
 
 @Composable
 fun DiscussScreen(
     navController: NavController
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier
+        .fillMaxSize()
+    ) {
         items(count = 20) {
             QuestionItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 2.dp)
-                    .background(color = MaterialTheme.colors.secondary)
+                    .background(color = DarkBackground)
                     .padding(top = 10.dp, start = 10.dp, end = 10.dp),
                 userName = "Rohit Sharma",
                 userProfileImage = Icons.Default.Person,

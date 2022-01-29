@@ -2,15 +2,14 @@ package com.example.androidhub.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val DarkGray = Color(0xFF333A40)
-val LightGray = Color(0xFF414C52)
-val Black = Color(0xFF000000)
+val BottomNavItemColor = Color(0xFFA8A8A8)
 
-val BottomNavItemColor = Color(0xFFC1C5C6)
-val BottomNavColor = Color(0xFF333A40)
+val TextGray = Color(0xFFA0A0A0)
+val TextDarkGray = Color(0xFF929292)
 
-val TextDarkGray = Color(0xFF7A8B93)
-val TextLightGray = Color(0xFFA8ACAF)
+val PrimaryBackground = Color(0xFF2D2D2D)
+val DarkBackground = Color(0xFF121212)
+val LightBackground = Color(0xFF292929)
 
 val Red = Color(0xFFff5d5d)
 val Green = Color(0xFF38db8a)
