@@ -1,10 +1,9 @@
 package com.example.androidhub.ui.community.post
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -13,7 +12,7 @@ import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.MapsUgc
 import androidx.compose.material.icons.outlined.Send
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,8 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androidhub.R
+import com.example.androidhub.ui.theme.LightBackground
 import com.example.androidhub.ui.theme.Orange
 import com.example.androidhub.ui.theme.TextGray
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 
 @Composable
 fun PostItem(
@@ -91,41 +94,39 @@ fun PostItem(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PostContent(
     modifier: Modifier = Modifier
 ) {
-    var currentImage by remember {
-        mutableStateOf(1)
-    }
     val imageList = listOf(
         painterResource(id = R.drawable.demo),
         painterResource(id = R.drawable.demo_1),
         painterResource(id = R.drawable.demo_2),
         painterResource(id = R.drawable.demo_3),
     )
-    Box(modifier = modifier) {
-        LazyRow(Modifier.fillMaxWidth()) {
-            itemsIndexed(imageList) { index, item ->
-                Image(
-                    painter = item,
-                    contentDescription = "Image",
-                    modifier = Modifier,
-                    contentScale = ContentScale.Crop
+    val pageState = rememberPagerState(pageCount = imageList.size)
+    HorizontalPager(state = pageState, modifier = modifier) { page ->
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Image(
+                painter = imageList[page],
+                contentDescription = "Image",
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(LightBackground)
+            ) {
+                Text(
+                    text = "${pageState.currentPage+1}/${imageList.size}",
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
                 )
             }
-        }
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(30.dp))
-                .align(Alignment.TopEnd)
-                .padding(10.dp)
-        ) {
-            Text(
-                text = "$currentImage/${imageList.size}",
-                fontSize = 12.sp,
-                modifier = Modifier.padding(5.dp)
-            )
         }
     }
 }

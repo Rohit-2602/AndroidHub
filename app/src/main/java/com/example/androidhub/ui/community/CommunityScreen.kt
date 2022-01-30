@@ -1,16 +1,22 @@
 package com.example.androidhub.ui.community
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.androidhub.ui.community.article.CommunityArticleScreen
 import com.example.androidhub.ui.community.post.CommunityPostScreen
+import com.example.androidhub.ui.composables.StandardAppBar
 import com.example.androidhub.ui.composables.ViewPagerItem
 
 @Composable
@@ -20,6 +26,25 @@ fun CommunityScreen(
 ) {
 
     Column(modifier = Modifier.fillMaxSize()) {
+        StandardAppBar(
+            navController = navController,
+            Title = {
+                Text(
+                    text = "Community",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                        .padding(start = 15.dp)
+                )
+            }, NavActions = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "Action Notification"
+                    )
+                }
+            }
+        )
         Row(modifier = Modifier.fillMaxWidth()) {
             ViewPagerItem(
                 title = "Posts",
