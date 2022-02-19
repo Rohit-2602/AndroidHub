@@ -3,11 +3,21 @@ package com.example.androidhub.ui.signup
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.androidhub.repository.AuthRepository
+import com.example.androidhub.util.Constants.USERNAME_ALREADY_EXIST
+import com.example.androidhub.util.Constants.USER_ALREADY_EXIST
+import com.example.androidhub.util.Resource
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val firebaseAuth: FirebaseAuth,
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _userNameText = mutableStateOf("")
     val userNameText: State<String> = _userNameText
@@ -63,12 +73,93 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
         _showConfirmPassword.value = showPassword
     }
 
+    fun setUserNameError(error: String) {
+        _userNameError.value = error
+    }
+
     fun setEmailError(error: String) {
         _emailError.value = error
     }
 
     fun setPasswordError(error: String) {
         _passwordError.value = error
+    }
+
+    fun setConfirmPasswordError(error: String) {
+        _confirmPasswordError.value = error
+    }
+
+    private val _progress = mutableStateOf(false)
+    val progress: State<Boolean> = _progress
+
+    private fun setProgress(value: Boolean) {
+        _progress.value = value
+    }
+
+    private val _signUpMessage = mutableStateOf("")
+    val signUpMessage: State<String> = _signUpMessage
+
+    fun setSignUpMessage(value: String) {
+        _signUpMessage.value = value
+    }
+
+    fun createUser(onSuccess: () -> Unit) = viewModelScope.launch {
+        setProgress(true)
+        when(val response = authRepository.verifyFields(username = userNameText.value, email = emailText.value)) {
+            is Resource.Loading -> {
+
+            }
+            is Resource.Success -> {
+                if (response.data!!.successful) {
+                    firebaseAuth.createUserWithEmailAndPassword(emailText.value, passwordText.value)
+                        .addOnCompleteListener { authResult ->
+                            if (authResult.isSuccessful) {
+                                firebaseAuth.currentUser!!.sendEmailVerification()
+                                    .addOnCompleteListener { emailVerification ->
+                                        if (emailVerification.isSuccessful) {
+                                            createUser(id = firebaseAuth.currentUser!!.uid)
+                                            setProgress(false)
+                                            onSuccess()
+                                        } else {
+                                            setProgress(false)
+                                            setSignUpMessage(emailVerification.exception!!.message.toString())
+                                        }
+                                    }
+                            } else {
+                                setProgress(false)
+                                setSignUpMessage(authResult.exception!!.message.toString())
+                            }
+                        }
+                } else {
+                    if (response.data.message == USERNAME_ALREADY_EXIST) {
+                        setUserNameError(USERNAME_ALREADY_EXIST)
+                    }
+                    if (response.data.message == USER_ALREADY_EXIST) {
+                        setEmailError(USER_ALREADY_EXIST)
+                    }
+                    setProgress(false)
+                }
+            }
+            is Resource.Error -> {
+                setSignUpMessage(response.message.toString())
+                setProgress(false)
+            }
+        }
+    }
+
+    private fun createUser(id: String) = viewModelScope.launch {
+        when(val response = authRepository.createUser(id, email = emailText.value, username = userNameText.value)) {
+            is Resource.Success -> {
+                setProgress(false)
+            }
+            is Resource.Error -> {
+                setSignUpMessage(response.message.toString())
+                setProgress(false)
+            }
+            is Resource.Loading -> {
+
+            }
+        }
     }
 
 }
